@@ -28,6 +28,30 @@ const mongoClient = {
 
     getProfiles(){
         return this._profilesCollection.find({}).toArray();
+    },
+
+    create(data){
+        return this._profilesCollection.insertOne({
+            name: data.name,
+            frames: data.frames,
+        });
+    },
+
+    update(data){
+        const profileId = data.id;
+        return this._profilesCollection.updateOne(
+            {_id: data.id},
+            {
+                $set: {
+                    name: data.name,
+                    frames: data.frames,
+                }
+            }
+        );
+    },
+
+    delete(profileId){
+        return this._profilesCollection.deleteOne({_id: profileId});
     }
 }
 
