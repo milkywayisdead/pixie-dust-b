@@ -1,4 +1,5 @@
 const _mongoClient = require("mongodb").MongoClient;
+const ObjectId = require("mongodb").ObjectId;
 
 const mongodbHost = 'localhost';
 const mongodbPort = 27017;
@@ -23,7 +24,8 @@ const mongoClient = {
     },
 
     getProfile(profileId){
-        return this._profilesCollection.findOne({_id: profileId});
+        const id = new ObjectId(profileId);
+        return this._profilesCollection.findOne({_id: id});
     },
 
     getProfiles(){
@@ -38,9 +40,8 @@ const mongoClient = {
     },
 
     update(data){
-        const profileId = data.id;
         return this._profilesCollection.updateOne(
-            {_id: data.id},
+            {_id: new ObjectId(data.id)},
             {
                 $set: {
                     name: data.name,
@@ -51,7 +52,8 @@ const mongoClient = {
     },
 
     delete(profileId){
-        return this._profilesCollection.deleteOne({_id: profileId});
+        const id = new ObjectId(profileId);
+        return this._profilesCollection.deleteOne({_id: id});
     }
 }
 

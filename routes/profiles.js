@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const mongoClient = require('../mongo');
-const objectId = require("mongodb").ObjectId;
 
 
 router.get('/profiles', async function(req, res, next) {
@@ -10,8 +9,7 @@ router.get('/profiles', async function(req, res, next) {
 });
 
 router.get('/profile/:id', async function(req, res, next) {
-  const profileId = new objectId(req.params.id);
-  const profile = await mongoClient.getProfile(profileId); 
+  const profile = await mongoClient.getProfile(req.params.id); 
   res.send(profile);
 });
 
@@ -32,7 +30,7 @@ router.post('/profile', async function(req, res, next) {
 });
 
 router.delete('/profile/:id', async function(req, res, next) {
-  const profileId = new objectId(req.params.id);
+  const profileId = req.params.id;
   const result = await mongoClient.delete(profileId); 
   res.send({
     id: result.deletedCount > 0 ? profileId : '',
